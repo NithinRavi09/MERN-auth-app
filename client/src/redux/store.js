@@ -1,11 +1,12 @@
 import { configureStore, combineReducers } from '@reduxjs/toolkit';
 import userReducer from './user/userSlice';
-import { persistReducer } from 'redux-persist'; // Fixed typo: "persistReducer" (not "presistReducer")
+import adminReducer from './admin/adminSlice';
+import { persistReducer } from 'redux-persist'; 
 import storage from 'redux-persist/lib/storage';
-import persistStore from 'redux-persist/es/persistStore'; // This is correct
+import persistStore from 'redux-persist/es/persistStore';
 
-// Combine your reducers
-const rootReducer = combineReducers({ user: userReducer });
+
+const rootReducer = combineReducers({ user: userReducer, admin: adminReducer, });
 
 // Persist configuration
 const persistConfig = {
@@ -22,7 +23,7 @@ export const store = configureStore({
     reducer: persistedReducer,
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware({
-            serializableCheck: false, // Disable serializable checks for redux-persist
+            serializableCheck: false,
         }),
 });
 
