@@ -34,8 +34,8 @@ export default function AdminSignIn() {
         return;
       }
 
-      dispatch(signinSuccess(data));
-      navigate('/admin/home'); 
+      dispatch(signinSuccess(data.admin));
+      navigate('/admin'); 
     } catch (error) {
       dispatch(signinFailure(error));
     }

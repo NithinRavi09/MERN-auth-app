@@ -38,21 +38,28 @@ export const getAllUsers = async (req, res) => {
     }
 };
 
-// // Create User
-// export const createUser = async (req, res) => {
-//     try {
-//         const { name, email, password } = req.body;
-//         const hashedPassword = await bcrypt.hash(password, 10);
-//         const newUser = new User({ name, email, password: hashedPassword });
+// Create User
+export const createUser = async (req, res) => {
+    try {
+        const { username, email, password } = req.body;
 
-//         await newUser.save();
-//         res.json({ success: true, message: 'User created successfully' });
-//     } catch (error) {
-//         res.status(500).json({ success: false, message: 'Server error' });
-//     }
-// };
+        const existingUser = await User.findOne({ email });
+        if (existingUser) {
+            return res.status(400).json({ success: false, message: 'Email already in use' });
+        }
 
-// // Edit User
+        const hashedPassword = await bcrypt.hash(password, 10);
+        const newUser = new User({ username, email, password: hashedPassword });
+
+        await newUser.save();
+        res.json({ success: true, message: 'User created successfully' });
+    } catch (error) {
+        res.status(500).json({ success: false, message: 'Server error' });
+    }
+};
+
+
+// Edit User
 export const updateUser = async (req, res) => {
     try {
         const { username, email } = req.body;
@@ -74,6 +81,7 @@ export const deleteUser = async (req, res) => {
     }
 };
 
+// admin logout
 export const adminLogout = (req, res) => {
     try {
         res.clearCookie('adminToken', { httpOnly: true, secure: true, sameSite: 'strict' });

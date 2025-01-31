@@ -4,6 +4,7 @@ const initialState = {
   admin: null,
   loading: false,
   error: null,
+  isAdmin: false,  
 };
 
 const adminSlice = createSlice({
@@ -16,14 +17,17 @@ const adminSlice = createSlice({
     signinSuccess: (state, action) => {
       state.loading = false;
       state.admin = action.payload;
+      state.isAdmin = true; 
       state.error = null;
     },
     signinFailure: (state, action) => {
       state.loading = false;
       state.error = action.payload;
+      state.isAdmin = false;  
     },
     signOut: (state) => {
       state.admin = null;
+      state.isAdmin = false;  
       state.loading = false;
       state.error = null;
     },

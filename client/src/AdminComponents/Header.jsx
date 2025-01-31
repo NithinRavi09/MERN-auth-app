@@ -7,7 +7,7 @@ import Swal from 'sweetalert2';
 import { useDispatch } from 'react-redux'; 
 
 export default function Header() {
-  const isAdmin = useSelector((state) => state.admin.admin);
+  const admin = useSelector((state) => state.admin);
   const dispatch = useDispatch();  
   const navigate = useNavigate(); 
 
@@ -43,10 +43,10 @@ export default function Header() {
       <div className='flex justify-between items-center max-w-6xl mx-auto p-3'>
         <h1 className='font-bold'>Auth App Admin</h1>
         <ul className='flex gap-8'>
-          <Link to='/admin/home'>
+          <Link to='/admin'>
             <li>Home</li> 
           </Link>
-          {isAdmin ? (
+          {admin.isAdmin ? (
             <>
               <Link to='/admin/userDetails'>
                 <li>User Details</li>
