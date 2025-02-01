@@ -34,6 +34,10 @@ export default function AdminSignIn() {
         return;
       }
 
+      if (!data.admin) {
+        dispatch(signinFailure({ message: 'Invalid response from server' }));
+        return;
+      }
       dispatch(signinSuccess(data.admin));
       navigate('/admin'); 
     } catch (error) {

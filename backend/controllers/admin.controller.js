@@ -13,14 +13,18 @@ export const adminLogin = async (req, res) => {
             return res.status(400).json({ success: false, message: 'Admin not found' });
         }
 
-        // const isMatch = await bcrypt.compare(password, admin.password);
-        // if (!isMatch) {
-        //     return res.status(400).json({ success: false, message: 'Invalid credentials' });
-        // }
+        const isMatch = await bcrypt.compare(password, admin.password);
+        if (!isMatch) {
+            return res.status(400).json({ success: false, message: 'Invalid credentials' });
+        }
 
         const token = jwt.sign({ id: admin._id, role: 'admin' }, process.env.JWT_SECRET, { expiresIn: '1d' });
 
-        res.cookie('adminToken', token, { httpOnly: true }).json({ success: true, token });
+        const {...rest} = admin._doc;
+        const expiryDate = new Date(Date.now() + 3600000);
+
+        res.cookie('adminToken', token, { httpOnly: true, expires: expiryDate }).status(200).json({ success: true, admin: rest });
+
     } catch (error) {
         res.status(500).json({ success: false, message: 'Server error' });
     }
@@ -63,6 +67,12 @@ export const createUser = async (req, res) => {
 export const updateUser = async (req, res) => {
     try {
         const { username, email } = req.body;
+
+        const existingUser = await User.findOne({ email });
+        if (existingUser) {
+            return res.status(400).json({ success: false, message: 'Email already in use' });
+        }
+        
         await User.findByIdAndUpdate(req.params.id, { username, email });
 
         res.json({ success: true, message: 'User updated successfully' });

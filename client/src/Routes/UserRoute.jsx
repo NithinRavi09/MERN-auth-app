@@ -6,6 +6,8 @@ import SignUp from "../pages/SignUp";
 import Profile from "../pages/Profile";
 import Header from "../compontents/Header";
 import PrivateRoute from "../compontents/PrivateRoute";
+import SigninPrivateRoute from "../compontents/SigninPrivateRoute";
+import NotFound from "../pages/NotFound";
 
 export default function UserRoute() {
   return (
@@ -14,11 +16,14 @@ export default function UserRoute() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="about" element={<About />} />
+        <Route element={<SigninPrivateRoute/>}>
         <Route path="sign-in" element={<SignIn />} />
         <Route path="sign-up" element={<SignUp />} />
+        </Route>
         <Route element={<PrivateRoute />}>
           <Route path="profile" element={<Profile />} />
         </Route>
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </>
   );

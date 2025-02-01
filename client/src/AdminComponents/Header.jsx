@@ -41,7 +41,7 @@ export default function Header() {
   return (
     <div className='bg-pink-100'>
       <div className='flex justify-between items-center max-w-6xl mx-auto p-3'>
-        <h1 className='font-bold'>Auth App Admin</h1>
+        <h1 className='font-bold'>Auth Admin App</h1>
         <ul className='flex gap-8'>
           <Link to='/admin'>
             <li>Home</li> 
