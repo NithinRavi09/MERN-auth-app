@@ -68,12 +68,14 @@ export const updateUser = async (req, res) => {
     try {
         const { username, email } = req.body;
 
-        const existingUser = await User.findOne({ email });
+        const userId = req.params.id;
+
+        const existingUser = await User.findOne({ email, _id: { $ne: userId } });
         if (existingUser) {
             return res.status(400).json({ success: false, message: 'Email already in use' });
         }
-        
-        await User.findByIdAndUpdate(req.params.id, { username, email });
+
+        await User.findByIdAndUpdate(userId, { username, email });
 
         res.json({ success: true, message: 'User updated successfully' });
     } catch (error) {
